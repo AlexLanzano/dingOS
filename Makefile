@@ -7,13 +7,12 @@ LINK = -T init/linker.ld
 
 INIT = init/boot.S init/start.c init/main.c 
 BUILD = build/
-DRIVERS = 
-KERNEL = 
+DRIVERS = drivers/gpio.c drivers/timer.c
 
 
 all: main
 
 
 main:
-	$(GCC) $(CFLAGS) $(CVERSION) $(LINK) $(DRIVERS) $(KERNEL) $(INIT) -o $(BUILD)kernel.elf
+	$(GCC) $(CFLAGS) $(CVERSION) $(LINK) $(DRIVERS) $(INIT) -o $(BUILD)kernel.elf
 	$(OBJCOPY) $(BUILD)kernel.elf -O binary kernel7.img
