@@ -6,8 +6,11 @@
 extern int _kernel_start;
 extern int _kernel_end;
 
+extern int enable_mmu();
+
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
+	//enable_mmu();
 	gpio_select_function(47, 1); // turn ack LED into output
 	gpio_set_pin(47, 1); // turn LED on
 	while(1){

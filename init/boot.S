@@ -1,7 +1,7 @@
 	.section ".text.boot"
 
 	.global _start
-IMPORT _kernel_end
+	.extern _kernel_end
 
 _start:
 	ldr sp, =0x8000
