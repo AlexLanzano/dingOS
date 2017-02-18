@@ -30,16 +30,18 @@ void show_blocks()
 
 void* malloc(size_t size)
 {
-	uint8_t *mem_byte = (uint8_t *)heap_start;
-	while((uint32_t)mem_byte < _heap_end){
-		block_t *block = (block_t *)mem;
+	uint8_t *mem = (uint8_t *)_heap_start;
 
-		if(block->free && size <= block->size){
+	// checks to see if there is a free block large enough already made
+	while((uint32_t)mem < _heap_end){
+		block_t *b_ptr = (block_t *)mem;
+
+		if(b_ptr->free && size <= b_ptr->size){
 
 			
-			if(b_ptr->size - size > sizeof(block_t)){ // splits the block into two blocks
+			if(b_ptr->size - size > sizeof(block_t)){
+				// if the block is large enough to be split
 				uint8_t *mem_temp = mem;
-				printf("%x\n", (uint32_t) mem_temp);
 				mem_temp += sizeof(block_t);
 				mem_temp += size;
 
@@ -60,28 +62,30 @@ void* malloc(size_t size)
 		mem += sizeof(block_t);
 		
 	}
-	
-	if(last_alloc+size+sizeof(block_t) < heap_end){ // allocates a block to the end of the heap
-		block_t *b_ptr = (block_t*) last_alloc;
+	// If no blocks were found, then it creates a new one at the end of the heap
+	if(_last_alloc+size+sizeof(block_t) < _heap_end){ 
+		block_t *b_ptr = (block_t*) _last_alloc;
 		b_ptr->free = 0;
 		b_ptr->size = size;
 
-		last_alloc += size;
-		last_alloc += sizeof(block_t);
+		_last_alloc += size;
+		_last_alloc += sizeof(block_t);
 
 		memset((char*)(uint32_t)b_ptr + sizeof(block_t), 0, size);
 		return (char*)(uint32_t)b_ptr + sizeof(block_t);
 		    
 	}
+	
 	return NULL;
 	
 }
 
-char* realloc(void *block, size_t size)
+char* realloc(void *mem, size_t size)
 {
 	block_t *block = (block_t *)(mem - sizeof(block_t));
 
-	if((uint32_t)mem == last_alloc || block->size <= size){
+	// if block is at the end of heap, extend the block
+	if((uint32_t)mem == _last_alloc || block->size <= size){
 		block->size = size;
 		return mem;
 		    
@@ -89,20 +93,21 @@ char* realloc(void *block, size_t size)
 	block_t *next_block = (block_t *)(mem + block->size);
 
 	size_t next_block_space = sizeof(block_t) + next_block->size;
-
+	// if the next block is free and is large enough, then combine the blocks
 	if(next_block->free && block->size + next_block_space <= size){
 		block->size += next_block_space;
 		return mem;
 		    
 	}
 
+	// creates a new block at the end of heap
 	block->free = 1;
-	block_t *new_block = (block_t *)last_alloc;
+	block_t *new_block = (block_t *)_last_alloc;
 	new_block->free = 0;
 	new_block->size = size;
 
-	last_alloc += size;
-	last_alloc += sizeof(block_t);
+	_last_alloc += size;
+	_last_alloc += sizeof(block_t);
 
 	//possibly need to memset new_block + sizeof(block_t) to 0
 	memcpy(new_block + sizeof(block_t), mem, size);
