@@ -10,8 +10,9 @@ BUILD = build/
 DRIVERS = drivers/gpio.c drivers/timer.c
 MEMORY = memory/alloc.c memory/filesystem.c
 LIB = lib/string.c
+INTERRUPT = interrupt/vector_table.S interrupt/arm_timer.c interrupt/interrupt_handlers.c
 
-SOURCE = $(INIT) $(DRIVERS) $(MEMORY) $(LIB)
+SOURCE = $(INIT) $(DRIVERS) $(MEMORY) $(LIB) $(INTERRUPT)
 
 all: main
 
