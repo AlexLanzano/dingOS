@@ -8,6 +8,7 @@
 extern int _kernel_start;
 extern int _kernel_end;
 
+int _enable_interrupts(void);
 
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {

@@ -1,3 +1,10 @@
+	.global reset_handler
+	.global undefined_instruction_handler
+	.global software_interrupt_handler
+	.global prefetch_abort_handler
+	.global irq_handler
+	.global fiq_handler
+
 vector_table:
 	ldr pc, [pc, #24]
 	ldr pc, [pc, #24]
@@ -18,7 +25,7 @@ _fiq_handler:					.word	fiq_handler
 
 
 
-.global fill_vector_able
+.global fill_vector_table
 fill_vector_table:
 	mov		r0, #0
 	MCR		p15, 0, r0, c12, c0, 0  // Write VBAR. Not sure why I need this

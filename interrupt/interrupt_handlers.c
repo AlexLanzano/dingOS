@@ -48,7 +48,7 @@ void __attribute__((interrupt("ABORT"))) data_abort_handler(void)
 	
 }
 
-void __attribute__((interrupt("IRQ"))) irq_hander(void)
+void __attribute__((interrupt("IRQ"))) irq_handler(void)
 {
 	
 }
