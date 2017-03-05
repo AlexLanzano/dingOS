@@ -3,6 +3,9 @@
 #ifndef GPIO_H
 #define GPIO_H
 
+#define ACK_ON()  do{ gpio_set_pin(47, 1);} while(0)
+#define ACK_OFF() do{ gpio_set_pin(47, 0);} while(0)
+
 #define GPIO_BASE 0x3f200000
 
 #define GPIO_GPFSEL0    0

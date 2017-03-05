@@ -8,11 +8,11 @@ LINK = -T init/linker.ld
 INIT = init/boot.S init/start.c init/main.c 
 BUILD = build/
 DRIVERS = drivers/gpio.c drivers/timer.c
-MEMORY = memory/alloc.c memory/filesystem.c
+MEMORY = memory/alloc.c memory/filesystem.c memory/mem.c
 LIB = lib/string.c
 INTERRUPT = interrupt/vector_table.S interrupt/arm_timer.c interrupt/interrupt_handlers.c
-
-SOURCE = $(INIT) $(DRIVERS) $(MEMORY) $(LIB) $(INTERRUPT)
+GRAPHICS = graphics/mailbox.c
+SOURCE = $(INIT) $(DRIVERS) $(MEMORY) $(LIB) $(INTERRUPT) $(GRAPHICS)
 
 all: main
 
