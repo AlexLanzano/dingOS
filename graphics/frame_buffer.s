@@ -51,4 +51,11 @@ frame_buffer_init:
 	pop		{r4, pc}
 	.unreq	frame_buffer_addr
 
-	
+	.global get_frame_buffer
+get_frame_buffer:
+
+	push	{lr}
+	ldr		r1, =frame_buffer
+	ldr		r0, [r1, #32]
+	and		r0, #0x3fffffff
+	pop		{pc}
