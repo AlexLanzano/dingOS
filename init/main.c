@@ -8,8 +8,8 @@
 #include <alloc.h>
 
 
-#define WIDTH 1360
-#define HEIGHT 768
+#define WIDTH 1920
+#define HEIGHT 1080
 #define DEPTH 32
 
 
