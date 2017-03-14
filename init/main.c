@@ -6,10 +6,10 @@
 #include <interrupt.h>
 #include <arm_timer.h>
 #include <alloc.h>
+#include <draw.h>
 
-
-#define WIDTH 1360
-#define HEIGHT 768
+#define WIDTH 600
+#define HEIGHT 600
 #define DEPTH 32
 
 
@@ -41,17 +41,14 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 
 	
 	uint32_t *frame_buffer = frame_buffer_init(WIDTH, HEIGHT, DEPTH);
-	if(frame_buffer == 0)
-		ACK_ON();
-
 	uint32_t *buffer = (uint32_t *)(get_frame_buffer());
+	//init_screen_buffer(buffer, WIDTH, HEIGHT, DEPTH);
 	
 	while(1){
 		for(int y = 0; y < HEIGHT; ++y){
 			for(int x = 0; x < WIDTH; ++x){
 				buffer[y*WIDTH + x] = color;
 			}
-			color = (color + 1) | 0xff000000;
 	    }
 	}
 
