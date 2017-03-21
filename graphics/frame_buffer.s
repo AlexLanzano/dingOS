@@ -1,5 +1,5 @@
 	.section	.data
-	.align		12
+	.align		4
 	.global frame_buffer
 frame_buffer:
 	.int	1024	// width
