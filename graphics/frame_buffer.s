@@ -51,6 +51,13 @@ frame_buffer_init:
 	pop		{r4, pc}
 	.unreq	frame_buffer_addr
 
+	.global get_pitch
+get_pitch:
+	push	{lr}
+	ldr		r1, =frame_buffer
+	ldr		r0, [r1, #16]
+	pop		{pc}
+	
 	.global get_frame_buffer
 get_frame_buffer:
 

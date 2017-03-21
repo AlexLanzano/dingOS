@@ -10,7 +10,7 @@
 
 #define WIDTH 1280
 #define HEIGHT 720
-#define DEPTH 16
+#define DEPTH 32
 
 
 extern int _kernel_start;
@@ -21,6 +21,7 @@ uint32_t* frame_buffer_init(uint32_t width, uint32_t height, uint32_t depth);
 void mailbox_write(uint8_t channel, uint32_t value);
 uint32_t mailbox_read(uint8_t channel);
 uint32_t get_frame_buffer(void);
+uint32_t get_pitch(void);
 
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
@@ -29,7 +30,7 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	get_interrupt_controller()->enable_basic_irq = ARM_TIMER;
 	get_arm_timer()->load = 0x400;
 
-	uint16_t color = 0xffff;
+	uint32_t color = 0xffffffff;
 	
 	get_arm_timer()->control =
 		ARM_TIMER_CTRL_23BIT |
@@ -42,15 +43,14 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	
 	uint32_t *frame_buffer = frame_buffer_init(WIDTH, HEIGHT, DEPTH);
 	uint32_t *buffer = (uint32_t *)(get_frame_buffer());
+	uint32_t pitch = get_pitch();
+	
 	init_screen_buffer(buffer, WIDTH, HEIGHT, DEPTH);
 	for(int y = 0; y < HEIGHT; ++y){
 		for(int x = 0; x < WIDTH; ++x){
-			draw_pixel(x, y, color);
+			buffer[(y * pitch) + (x * (DEPTH >> 3))] = color;
 		}
 	}
-	draw_rect(10, 10, 50, 50, 0xff0000ff);
-
-	draw_char('A', 30, 30, 0xff0000ff);
 	
 
 	while(1){
