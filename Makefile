@@ -11,7 +11,7 @@ DRIVERS = drivers/gpio.c drivers/timer.c
 MEMORY = memory/alloc.c memory/filesystem.c memory/mem.c
 LIB = lib/string.c
 INTERRUPT = interrupt/vector_table.S interrupt/arm_timer.c interrupt/interrupt_handlers.c
-GRAPHICS = graphics/mailbox.s graphics/frame_buffer.s
+GRAPHICS = graphics/mailbox.s graphics/frame_buffer.s graphics/draw.c graphics/font.S
 
 SOURCE = $(INIT) $(DRIVERS) $(MEMORY) $(LIB) $(INTERRUPT) $(GRAPHICS)
 
