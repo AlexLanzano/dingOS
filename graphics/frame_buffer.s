@@ -1,6 +1,5 @@
 	.section	.data
 	.align		4
-	.global frame_buffer
 frame_buffer:
 	.int	1024	// width
 	.int	768		// height
@@ -14,15 +13,69 @@ frame_buffer:
 	.int	0		// size
 
 
+	.section	.data
+release_buffer:
+	.int	release_buffer_end - release_buffer
+	.int	0
+	.int	0x48001	// Tag ID
+	.int	0		// buffer length
+	.int	0		// request/response
+	.int	0		// null tag
+release_buffer_end:
+
+	.section	.data
+alloc_frame_buffer:
+	.int	alloc_frame_buffer_end - alloc_frame_buffer
+	.int	0
+
+	.int	0x48003
+	.int	8
+	.int	0
+	.int	1360
+	.int	768
+
+	.int	0x48004
+	.int	8
+	.int	0
+	.int	1360
+	.int	768
+
+	.int	0x48005
+	.int	4
+	.int	0
+	.int	24
+
+	.int	0x40001
+	.int	8
+	.int	0
+	.int	0
+	.int	0
+
+	.int	0
+alloc_frame_buffer_end:	
+	
 	.section .text
 	.global frame_buffer_init
 frame_buffer_init:
+
+	push	{r4, lr}
+/*
+	mov		r0, #8
+	ldr		r1, =release_buffer
+	add		r1, #0xc0000000
+	bl		mailbox_write
+
+	mov		r0, #8
+	ldr		r1, =alloc_frame_buffer
+	add		r1, #0xc0000000
+	bl		mailbox_write
+*/	
 	width				.req	r0
 	height				.req	r1
 	depth				.req	r2
 	frame_buffer_addr	.req	r4
 
-	push	{r4, lr}
+	
 	ldr		frame_buffer_addr, =frame_buffer
 	
 	str		width, [r4, #0]

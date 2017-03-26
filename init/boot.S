@@ -49,6 +49,13 @@ _start:
 	
 	bl		fill_vector_table
 
+	mrc 	p15,0,r0,c1,c0,0	
+	orr		r0, #0x800
+	orr		r0,	#0x4
+	orr		r0, #0x1000
+	mcr p15,0,r0,c1,c0,0
+
+	
 	mov		sp, #0x8000
 	bl		_cstart
 	

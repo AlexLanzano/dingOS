@@ -40,17 +40,16 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 		ARM_TIMER_CTRL_ENABLE |
 		ARM_TIMER_CTRL_INT_ENABLE |
 		ARM_TIMER_CTRL_PRESCALE_256;
-
-	_enable_interrupts();
+	
+	//_enable_interrupts();
 	//aux_mini_uart_init(115200, 8);
 	//aux_mini_uart_putc('a');
 	
 	uint32_t *frame_buffer = (uint32_t *)frame_buffer_init(WIDTH, HEIGHT, DEPTH);
 	uint8_t *buffer = (uint8_t *)(get_frame_buffer());
-	uint32_t pitch = (get_pitch() >> 3);
+	uint32_t pitch = get_pitch();
 	
 	//init_screen_buffer(buffer, WIDTH, HEIGHT, DEPTH);
-	
 	for(int y = 0; y < HEIGHT; y++){
 		for(int x = 0; x < WIDTH; x++){
 			buffer[((y * pitch) + (x * (DEPTH >> 3))) + 0 ] = color;
