@@ -46,13 +46,12 @@ _start:
 
 	msr		CPSR_c, #SVC_MODE|I_BIT|F_BIT
 	ldr		sp, =svc_stack_top
-
-	bl		fill_vector_table
 	
+	bl		fill_vector_table
 
-	b _cstart
-
-
+	mov		sp, #0x8000
+	bl		_cstart
+	
 _inf_loop:
 	b _inf_loop
 
