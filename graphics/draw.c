@@ -1,28 +1,31 @@
 #include <stdint.h>
+#include <gpio.h>
 
-
-extern const uint8_t *font;
-uint32_t *buffer;
+uint8_t *font;
+uint8_t *buffer;
 uint32_t width;
 uint32_t height;
 uint32_t depth;
+uint32_t pitch;
 
-
-void init_screen_buffer(uint32_t *fb, uint32_t w, uint32_t h, uint32_t d)
+void init_screen_buffer(uint8_t *fb, uint32_t w, uint32_t h, uint32_t d, uint32_t p)
 {
 	buffer = fb;
 	width = w;
 	height = h;
 	depth = d;
+	pitch = p;
 }
 
 
-void draw_pixel(uint32_t x, uint32_t y, uint32_t color) // ADD DIFFERENT BIT COLORS LATER
+void draw_pixel(uint32_t x, uint32_t y, uint8_t color) // ADD DIFFERENT BIT COLORS LATER
 {
-	buffer[y*width +x] = color;
+	buffer[((y * pitch) + (x * (depth >> 3))) + 0 ] = color;
+	buffer[((y * pitch) + (x * (depth >> 3))) + 1 ] = color;
+	buffer[((y * pitch) + (x * (depth >> 3))) + 2 ] = color;
 }
 
-void draw_line(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t color)
+void draw_line(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint8_t color)
 {
 	int dx, dy;
 	int step_x, step_y;
@@ -77,7 +80,7 @@ void draw_line(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t colo
 	
 }
 
-void draw_rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t color)
+void draw_rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint8_t color)
 {
 	int width = x2 - x1;
 	int height = y2 - y1;
@@ -89,27 +92,32 @@ void draw_rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t colo
 	draw_line(x2, y2, x2, y2-height, color);
 }
 
-void draw_char(uint8_t c, uint32_t x, uint32_t y, uint32_t color)
+/*
+void draw_char(char c, uint32_t x, uint32_t y, uint8_t color)
 {
-	const uint8_t *font_data = font + c * 16;
+	uint8_t *char_addr = font + (c * 16);
 
-	for(int row = 0; row < 16; ++row){
-		uint8_t row_data = font_data[row];
-		for(uint8_t bit = 0; bit < 8; ++bit){
-			uint8_t mask = (1 << bit);
-			if(mask & row_data)
-				draw_pixel(x+bit, y, color);
+	if(char_addr[1043] == 0x10)
+		ACK_ON();
+	
+	for(int line = 0; line < 16; ++line){
+		for(int bit = 7; bit >= 0; --bit){
+			if(char_addr[line] >> bit == 1)
+				draw_pixel(x+bit, y+line, 0x00);
+			else
+				draw_pixel(x+bit, y+line, 0xff);
 		}
-		++y;
 	}
 }
-
-void draw_string(char *string, uint32_t x, uint32_t y, uint32_t color)
+*/
+/*
+void draw_string(char *string, uint32_t x, uint32_t y, uint8_t color)
 {
 	int x1 = x;
 	while(string != 0){
-		draw_char(*string, x1, y, color);
+		draw_char(*string, x1, y);
 		x1 += 8;
 		++string;
 	}
 }
+*/
