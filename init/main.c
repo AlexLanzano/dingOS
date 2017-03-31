@@ -60,7 +60,17 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 		}
 	}
 	color = 0x00;
-    draw_char('A', 10, 10);
+	char *string = "Hello";
+	uint32_t fgh = 10;
+	while(*string != 0){
+		draw_char(*string, fgh, 10);
+		string++;
+		fgh += 8;
+	}
+	//draw_char('e', 18, 10);
+	ACK_ON();
+
+	draw_string("hello", 50, 50, color);
 	/*
 	int y = 0;
 	for(int x = 0; x < WIDTH; ++x)

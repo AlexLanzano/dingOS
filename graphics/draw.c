@@ -8,6 +8,8 @@ uint32_t height;
 uint32_t depth;
 uint32_t pitch;
 
+void draw_char(char ch, uint32_t x, uint32_t y);
+
 void init_screen_buffer(uint8_t *fb, uint32_t w, uint32_t h, uint32_t d, uint32_t p)
 {
 	buffer = fb;
@@ -92,32 +94,13 @@ void draw_rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint8_t color
 	draw_line(x2, y2, x2, y2-height, color);
 }
 
-/*
-void draw_char(char c, uint32_t x, uint32_t y, uint8_t color)
-{
-	uint8_t *char_addr = font + (c * 16);
 
-	if(char_addr[1043] == 0x10)
-		ACK_ON();
-	
-	for(int line = 0; line < 16; ++line){
-		for(int bit = 7; bit >= 0; --bit){
-			if(char_addr[line] >> bit == 1)
-				draw_pixel(x+bit, y+line, 0x00);
-			else
-				draw_pixel(x+bit, y+line, 0xff);
-		}
-	}
-}
-*/
-/*
 void draw_string(char *string, uint32_t x, uint32_t y, uint8_t color)
 {
 	int x1 = x;
-	while(string != 0){
-		draw_char(*string, x1, y);
+	while(*string != 0){
+		draw_char(*string++, x1, y);
 		x1 += 8;
-		++string;
 	}
 }
-*/
+

@@ -85,7 +85,7 @@ draw_char:
 	movhi r1,#0
 	movhi pc,lr
 
-	push {lr}
+	push {r4, r5, r6,r7,r8, lr}
 	x .req r4
 	y .req r5
 	charAddr .req r6
@@ -133,3 +133,6 @@ charPixelLoopEnd$:
 	mov width,#8
 	mov height,#16
 	
+	pop	{r4, r5, r6, r7,r8, pc}
+	.unreq width
+	.unreq height
