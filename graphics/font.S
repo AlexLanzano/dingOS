@@ -90,6 +90,7 @@ draw_char:
 	push {r4, r5, r6,r7,r8, lr}
 	x .req r4
 	y .req r5
+	color .req r2
 	charAddr .req r6
 	mov x,r1
 	mov y,r2

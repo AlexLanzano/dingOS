@@ -56,7 +56,7 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	uint32_t *frame_buffer = (uint32_t *)frame_buffer_init(WIDTH, HEIGHT, DEPTH);
 	//ACK_ON();
 
-	uint32_t buffer = get_frame_buffer();
+	uint32_t *buffer = (uint32_t *)get_frame_buffer();
 	uint32_t pitch = get_pitch();
 	
 	init_screen_buffer(buffer, WIDTH, HEIGHT, DEPTH, pitch);
