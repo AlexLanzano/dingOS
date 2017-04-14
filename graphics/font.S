@@ -17,6 +17,8 @@ check_mem_loc:
 	ldrb	r0,[r1, #3]
 	
 	pop		{pc}
+
+
 	
 /*
 	.section	.text

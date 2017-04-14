@@ -9,6 +9,7 @@ frame_buffer:
 	.int	16		// depth
 	.int	0		// x offset
 	.int	0		// y offset
+fb_addr:	
 	.int	0		// address	
 	.int	0		// size
 
@@ -69,3 +70,7 @@ get_frame_buffer:
 	ldr		r0, [r1, #32]
 	and		r0, #0x3fffffff
 	pop		{pc}
+
+	
+
+	

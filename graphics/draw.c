@@ -2,15 +2,17 @@
 #include <gpio.h>
 
 uint8_t *font;
-uint8_t *buffer;
+uint32_t buffer;
 uint32_t width;
 uint32_t height;
 uint32_t depth;
 uint32_t pitch;
 
 void draw_char(char ch, uint32_t x, uint32_t y);
+void write32(uint32_t addr, uint32_t value);
+void read32(uint32_t addr);
 
-void init_screen_buffer(uint8_t *fb, uint32_t w, uint32_t h, uint32_t d, uint32_t p)
+void init_screen_buffer(uint32_t fb, uint32_t w, uint32_t h, uint32_t d, uint32_t p)
 {
 	buffer = fb;
 	width = w;
@@ -20,14 +22,13 @@ void init_screen_buffer(uint8_t *fb, uint32_t w, uint32_t h, uint32_t d, uint32_
 }
 
 
-void draw_pixel(uint32_t x, uint32_t y, uint8_t color) // ADD DIFFERENT BIT COLORS LATER
+void draw_pixel(uint32_t x, uint32_t y, uint32_t color) // ADD DIFFERENT BIT COLORS LATER
 {
-	buffer[((y * pitch) + (x * (depth >> 3))) + 0 ] = color;
-	buffer[((y * pitch) + (x * (depth >> 3))) + 1 ] = color;
-	buffer[((y * pitch) + (x * (depth >> 3))) + 2 ] = color;
+	uint32_t addr = buffer + (y * width + x) * 4;
+	write32(addr, color);
 }
 
-void draw_line(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint8_t color)
+void draw_line(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t color)
 {
 	int dx, dy;
 	int step_x, step_y;
@@ -82,7 +83,7 @@ void draw_line(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint8_t color
 	
 }
 
-void draw_rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint8_t color)
+void draw_rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint32_t color)
 {
 	int width = x2 - x1;
 	int height = y2 - y1;
@@ -95,7 +96,7 @@ void draw_rect(uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, uint8_t color
 }
 
 
-void draw_string(char *string, uint32_t x, uint32_t y, uint8_t color)
+void draw_string(char *string, uint32_t x, uint32_t y, uint32_t color)
 {
 	int x1 = x;
 	while(*string != 0){

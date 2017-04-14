@@ -23,7 +23,7 @@
 	.section ".text.boot"
 	
 	.global _start
-	.global _enable_interrupts
+//	.global _enable_interrupts
 
 	.extern _kernel_end
 	
@@ -47,7 +47,7 @@ _start:
 	msr		CPSR_c, #SVC_MODE|I_BIT|F_BIT
 	ldr		sp, =svc_stack_top
 	
-	bl		fill_vector_table
+//	bl		fill_vector_table
 	
 	mov		sp, #0x8000
 	bl		_cstart
