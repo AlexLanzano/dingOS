@@ -10,3 +10,7 @@ read32:
 	// uint32_t read32(uint32_t addr)
 	ldr		r0, [r0]
 	bx		lr
+
+	.global dummy
+dummy:
+	bx		lr
