@@ -9,8 +9,8 @@
 #include <mini_uart.h>
 
 
-#define WIDTH 1360
-#define HEIGHT 768
+#define WIDTH 1920
+#define HEIGHT 1080
 #define DEPTH 32
 
 #define ARM_TIMER_CTL 0x3f00B408
