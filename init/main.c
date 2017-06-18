@@ -82,9 +82,6 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 		ARM_TIMER_CTRL_INT_ENABLE |
 		ARM_TIMER_CTRL_PRESCALE_256;
 	*/
-	//_enable_interrupts();
-	//aux_mini_uart_init(115200, 8);
-	//aux_mini_uart_putc('a');
 	
 	uint32_t *frame_buffer = (uint32_t *)frame_buffer_init(WIDTH, HEIGHT, DEPTH);
 	//ACK_ON();
@@ -101,32 +98,6 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 		}
 	}
 
-	
-	//draw_rect(10, 10, 100, 100, 0x00000000);
-	//draw_string("hello", 50, 50, 0x00000000);
-	/*
-	color = 0x00;
-	char *string = "Hello";
-	uint32_t fgh = 10;
-	while(*string != 0){
-		draw_char(*string, fgh, 10);
-		string++;
-		fgh += 8;
-	}
-	//draw_char('e', 18, 10);
-	ACK_ON();
-
-	draw_string("hello", 50, 50, color);
-	*/	
-/*
-	int y = 0;
-	for(int x = 0; x < WIDTH; ++x)
-		buffer[x] = 0xffffff00;
-
-	y = 2;
-	for(int x = 0; x < WIDTH; ++x)
-		buffer[(y * pitch) + x] = 0xffff0000;
-	*/
 
 	int x = 0;
 	int y = 0;
