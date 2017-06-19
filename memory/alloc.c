@@ -12,7 +12,7 @@ void mm_init(uint32_t base_addr)
 	_last_alloc = base_addr + 0x1000;
 	_heap_start = _last_alloc;
 	_heap_end = 0x20000000;
-	memset((char *)_heap_start, 0, _heap_end - _heap_start);
+	//memset((char *)_heap_start, 0, _heap_end - _heap_start);
 }
 
 void show_blocks()

@@ -7,10 +7,10 @@
 #include <alloc.h>
 #include <draw.h>
 #include <mini_uart.h>
+#include <string.h>
 
-
-#define WIDTH 1920
-#define HEIGHT 1080
+#define WIDTH 1440
+#define HEIGHT 900
 #define DEPTH 32
 
 #define ARM_TIMER_CTL 0x3f00B408
@@ -31,15 +31,10 @@
 extern int _kernel_start;
 extern int _kernel_end;
 
-int _enable_interrupts(void);
 uint32_t* frame_buffer_init(uint32_t width, uint32_t height, uint32_t depth);
-void mailbox_write(uint8_t channel, uint32_t value);
-uint32_t mailbox_read(uint8_t channel);
 uint32_t get_frame_buffer(void);
 uint32_t get_pitch(void);
 void draw_char(char c, uint32_t x, uint32_t y, uint32_t color);
-uint8_t check_mem_loc(void);
-void DrawPixel(uint32_t x, uint32_t y, uint32_t buffer);
 
 void write32(uint32_t addr, uint32_t value);
 
@@ -67,38 +62,36 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
 
 	uart_init();
-	//write32(ARM_TIMER_CTL,0x00F90000);
-	//write32(ARM_TIMER_CTL,0x00F90200);
 	gpio_select_function(47, 1); // turn ack LED into output
 	
-	//	get_interrupt_controller()->enable_basic_irq = ARM_TIMER;
-	//get_arm_timer()->load = 0x400;
 
-	uint32_t color = 0xffffffff;
-	/*
-	get_arm_timer()->control =
-		ARM_TIMER_CTRL_23BIT |
-		ARM_TIMER_CTRL_ENABLE |
-		ARM_TIMER_CTRL_INT_ENABLE |
-		ARM_TIMER_CTRL_PRESCALE_256;
-	*/
-	
+	uint32_t color = 0xffffffff;	
 	uint32_t *frame_buffer = (uint32_t *)frame_buffer_init(WIDTH, HEIGHT, DEPTH);
-	//ACK_ON();
-
 	uint32_t *buffer = (uint32_t *)get_frame_buffer();
 	uint32_t pitch = get_pitch();
 	
 	init_screen_buffer(buffer, WIDTH, HEIGHT, DEPTH, pitch);
-	for(int y = 0; y < HEIGHT; y++){
-		for(int x = 0; x < WIDTH; x++){
-			//write32(buffer, color);
-			draw_pixel(x, y, color);
-			//buffer += 4;
-		}
-	}
+	clear_screen(COLOR_WHITE);
+    
 
+	//mm_init(_kernel_end);
+	draw_string("hellllllllo", 0, 16, COLOR_BLACK);
 
+	
+	char *str = (char*) (_kernel_end + 0x1000);
+	str[0] = 't';
+	str[1] = 'e';
+	str[2] = 's';
+	str[3] = 't';
+	str[4] = 't';
+	str[5] = 'e';
+	str[6] = 's';
+	str[7] = 't';
+	str[8] = 0;
+	
+	draw_string(str, 0, 0, COLOR_BLACK);
+	while(1);
+	/*	
 	int x = 0;
 	int y = 0;
 	while(1){
@@ -141,6 +134,7 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 
 		
 	}
+	*/
 
 	
 }
