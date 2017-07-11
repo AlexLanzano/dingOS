@@ -1,4 +1,8 @@
 ENTRY(_start)
+MEMORY
+{
+	ram (W) : ORIGIN = 0x8000, LENGTH = 164K
+}
 
 
 SECTIONS
@@ -12,7 +16,7 @@ SECTIONS
 		KEEP(*(.text.boot))
 		*(.text)
 										    
-	}
+	} > ram
     . = ALIGN(4096); /* align to page size */
 	 _text_end = .;
 
@@ -21,7 +25,7 @@ SECTIONS
 	{
 		*(.rodata)
 					    
-	}
+	} > ram
     . = ALIGN(4096); /* align to page size */
 	 _rodata_end = .;
 
@@ -30,7 +34,7 @@ SECTIONS
 	{
 		*(.data)
 					    
-	}
+	} > ram
     . = ALIGN(4096); /* align to page size */
 	_data_end = .;
 
@@ -40,7 +44,7 @@ SECTIONS
 		bss = .;
 		*(.bss)
 							    
-	}
+	} > ram
     . = ALIGN(4096); /* align to page size */
 	_bss_end = .;
 	_kernel_end = .;

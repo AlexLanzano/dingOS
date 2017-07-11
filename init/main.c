@@ -74,22 +74,8 @@ void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 	clear_screen(COLOR_WHITE);
     
 
-	//mm_init(_kernel_end);
-	draw_string("hellllllllo", 0, 16, COLOR_BLACK);
-
+	mm_init(_kernel_end);
 	
-	char *str = (char*) (_kernel_end + 0x1000);
-	str[0] = 't';
-	str[1] = 'e';
-	str[2] = 's';
-	str[3] = 't';
-	str[4] = 't';
-	str[5] = 'e';
-	str[6] = 's';
-	str[7] = 't';
-	str[8] = 0;
-	
-	draw_string(str, 0, 0, COLOR_BLACK);
 	while(1);
 	/*	
 	int x = 0;

@@ -4,6 +4,14 @@
 #include <stdint.h>
 
 typedef struct{
+	uint8_t *heap_start;
+	uint8_t *heap_end;
+	uint8_t *last_alloc;
+	uint32_t bytes_allocated;
+	uint32_t total_blocks;
+} mm_handler_t;
+
+typedef struct{
 	uint8_t free;
 	size_t size;
 } block_t;
