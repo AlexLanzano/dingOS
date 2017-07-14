@@ -17,17 +17,6 @@
 #define ARM_TIMER_CNT 0x3f00B420
 
 
-#define KEY_ENTER     13
-#define KEY_BACKSPACE 127
-
-#define KEY_ESC       27
-#define KEY_SYM_2     91
-
-#define KEY_UP        65
-#define KEY_DOWN      66
-#define KEY_LEFT      68
-#define KEY_RIGHT     67
-
 extern int _kernel_start;
 extern int _kernel_end;
 
@@ -60,67 +49,8 @@ void itoa(uint32_t i, char *str)
 
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
-
+	
 	uart_init();
-	gpio_select_function(47, 1); // turn ack LED into output
 	
-
-	uint32_t color = 0xffffffff;	
-	uint32_t *frame_buffer = (uint32_t *)frame_buffer_init(WIDTH, HEIGHT, DEPTH);
-	uint32_t *buffer = (uint32_t *)get_frame_buffer();
-	uint32_t pitch = get_pitch();
-	
-	init_screen_buffer(buffer, WIDTH, HEIGHT, DEPTH, pitch);
-	clear_screen(COLOR_WHITE);
-    
-
-	mm_init(_kernel_end);
-	
-	while(1);
-	/*	
-	int x = 0;
-	int y = 0;
-	while(1){
-		uint32_t c = uart_getc();
-
-		if(c == KEY_ESC){
-			c = uart_getc();
-			if(c == 91){
-				c = uart_getc();
-				if(c == KEY_UP){
-					
-				}
-				if(c == KEY_DOWN){
-					
-				}
-				if(c == KEY_LEFT){
-					
-				}
-				if(c == KEY_RIGHT){
-					
-				}
-				
-			}
-		}
-
-		if(c == KEY_ENTER){
-			y += 16;
-			x = 0;
-		}
-		if(c == KEY_BACKSPACE){
-			
-		}
-
-		draw_char(c, x, y, 0x00000000);
-		x += 8;
-		if(x >= WIDTH){
-			x = 0;
-			y += 16;
-		}
-
-		
-	}
-	*/
-
 	
 }
