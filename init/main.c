@@ -1,12 +1,12 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <gpio.h>
-#include <timer.h>
-#include <interrupt.h>
-#include <arm_timer.h>
+#include <bcm2836/io/gpio.h>
+#include <bcm2836/clock/timer.h>
+#include <bcm2836/interrupt.h>
+#include <bcm2836/clock/arm_timer.h>
 #include <alloc.h>
 #include <draw.h>
-#include <mini_uart.h>
+#include <bcm2836/serial/mini_uart.h>
 #include <string.h>
 
 #define WIDTH 1440
@@ -49,8 +49,17 @@ void itoa(uint32_t i, char *str)
 
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
+	gpio_select_function(47, 1);
+	ACK_ON();
+	//uart_i
+	//uart_init();
+	uint32_t color = 0xffffffff;
+	uint32_t *frame_buffer = (uint32_t *)frame_buffer_init(WIDTH,HEIGHT,DEPTH);
+	uint32_t *buffer = (uint32_t *)get_frame_buffer();
+	uint32_t pitch = get_pitch();
+
+	init_screen_buffer(buffer, WIDTH, HEIGHT, DEPTH, pitch);
+	clear_screen(COLOR_WHITE);
 	
-	uart_init();
-	
-	
+	while(1){}
 }

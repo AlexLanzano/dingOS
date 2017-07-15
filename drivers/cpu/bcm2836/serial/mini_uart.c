@@ -1,4 +1,4 @@
-#include <mini_uart.h>
+#include <bcm2836/serial/mini_uart.h>
 
 #define PBASE 0x3F000000
 #define ARM_TIMER_CTL   (PBASE+0x0000B408)

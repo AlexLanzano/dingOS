@@ -1,4 +1,4 @@
-#include <timer.h>
+#include <bcm2836/clock/timer.h>
 
 
 void wait(uint32_t msec)

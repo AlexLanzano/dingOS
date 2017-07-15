@@ -1,4 +1,4 @@
-#include <gpio.h>
+#include <bcm2836/io/gpio.h>
 
 void gpio_select_function(uint32_t pin, uint32_t function)
 {
