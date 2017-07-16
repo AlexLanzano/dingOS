@@ -8,6 +8,7 @@
 #include <draw.h>
 #include <bcm2836/serial/mini_uart.h>
 #include <string.h>
+#include <mem_rw.h>
 
 #define WIDTH 1440
 #define HEIGHT 900
@@ -25,7 +26,6 @@ uint32_t get_frame_buffer(void);
 uint32_t get_pitch(void);
 void draw_char(char c, uint32_t x, uint32_t y, uint32_t color);
 
-void write32(uint32_t addr, uint32_t value);
 
 void itoa(uint32_t i, char *str)
 {
@@ -49,11 +49,6 @@ void itoa(uint32_t i, char *str)
 
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
-	gpio_select_function(47, 1);
-	ACK_ON();
-	//uart_i
-	//uart_init();
-	uint32_t color = 0xffffffff;
 	uint32_t *frame_buffer = (uint32_t *)frame_buffer_init(WIDTH,HEIGHT,DEPTH);
 	uint32_t *buffer = (uint32_t *)get_frame_buffer();
 	uint32_t pitch = get_pitch();
