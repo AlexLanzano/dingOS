@@ -1,23 +1,17 @@
-#ifndef STRING_H
-#define STRING_H
+#ifndef INTERRUPT_H
+#define INTERRUPT_H
 
-#include <stddef.h>
-
-void memcpy(void *dst, const void *src, size_t num);
-int memcmp(const void *ptr1, const void *ptr2, size_t num);
-void* memchr(const void *ptr, int value, size_t num);
-void* memset(void *ptr, int value, size_t num);
-
-char* strcpy(char *dst, const char *src);
-char* strncpy(char *dst, const char *src, size_t num);
-char* strcat(char *dst, const char *src);
-char* strncat(char *dst, const char *src, size_t num);
-int strcmp(const char *str1, const char *str2);
-int strncmp(const char *str1, const char *str2, size_t num);
-char* strchr(const char *str, int ch);
-char* strtok(char *str, const char *delim);
-size_t strlen(const char* str);
-	
-	
+#define INTERRUPT_BASE 0x3f00b000
+#define INTERRUPT_IRQ_BASIC_PENDING INTERRUPT_BASE + 0x200
+#define INTERRUPT_IRQ1_PENDING INTERRUPT_BASE + 0x204
+#define INTERRUPT_IRQ2_PENDING INTERRUPT_BASE + 0x208
+#define INTERRUPT_FIQ_CONTROL INTERRUPT_BASE + 0x20C
+#define INTERRUPT_ENABLE_IRQ1 INTERRUPT_BASE + 0x210
+#define INTERRUPT_ENABLE_IRQ2 INTERRUPT_BASE + 0x214
+#define INTERRUPT_ENABLE_IRQ_BASIC INTERRUPT_BASE + 0x218
+#define INTERRUPT_DISABLE_IRQ1 INTERRUPT_BASE + 0x21C
+#define INTERRUPT_DISABLE_IRQ2 INTERRUPT_BASE + 0x220
+#define INTERRUPT_DISABLE_IRQ_BASIC INTERRUPT_BASE + 0x224
+void init_interrupts();
 
 #endif

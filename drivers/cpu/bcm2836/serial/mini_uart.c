@@ -1,4 +1,6 @@
 #include <bcm2836/serial/mini_uart.h>
+#include <mem_rw.h>
+
 
 #define PBASE 0x3F000000
 #define ARM_TIMER_CTL   (PBASE+0x0000B408)
@@ -24,8 +26,6 @@
 #define AUX_MU_BAUD_REG (PBASE+0x00215068)
 
 
-void write32(uint32_t, uint32_t);
-uint32_t read32(uint32_t);
 void dummy(uint32_t);
 
 uint32_t uart_getc(void)

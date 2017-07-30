@@ -1,6 +1,6 @@
 include $(DINGOS_PATH)/Makefile.inc
 
-SUBDIRS = clock io serial
+SUBDIRS = clock io serial interrupt
 
 all: $(SUBDIRS)
 
