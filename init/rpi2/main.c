@@ -39,12 +39,19 @@ void itoa(uint32_t i, char *str)
 
 void kernel_main(uint32_t r0, uint32_t r1, uint32_t atags)
 {
+
+	gpio_select_function(47, 1);
+	
 	init_interrupts();
+	init_timer();
+	enable_interrupts();
 	
     display_t display;
 	init_display(&display, WIDTH, HEIGHT, DEPTH);
 
 	clear_display(&display, COLOR_WHITE);
+
+	asm volatile ("swi #1234");
 	
 	while(1){}
 }

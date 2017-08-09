@@ -7,9 +7,13 @@ AOBJ = $(ASM:.S=.o)
 SRC = $(C) $(ASM)
 OBJ = $(COBJ) $(AOBJ)
 
-rpi2: $(OBJ)
-
-x86: $(OBJ)
+all: $(OBJ)
 
 %.o: %.c
 	$(CC) -c  $(CFLAGS) $(INCLUDE_PATH) -o $(TARGET_DIR)$@ $^
+
+%.o: %.S
+	$(CC) -c  $(CFLAGS) $(INCLUDE_PATH) -o $(TARGET_DIR)$@ $^
+
+
+

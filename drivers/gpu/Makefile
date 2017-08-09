@@ -1,10 +1,15 @@
-include $(DINGOS_PATH)/Makefile.inc
+include $(DINGOS_MAKEFILE_INCLUDE)
 
-SUBDIRS = core VideoCore_4
+SUBDIRS_RPI2 = core VideoCore_4
+SUBDIRS_X86 = core
 
-all: $(SUBDIRS)
 
-$(SUBDIRS):
+rpi2: $(SUBDIRS_RPI2)
+x86: $(SUBDIRS_X86)
+
+$(SUBDIRS_RPI2):
+	$(MAKE) -C $@
+$(SUBDIRS_X86):
 	$(MAKE) -C $@
 
 .PHONY: all $(SUBDIRS)

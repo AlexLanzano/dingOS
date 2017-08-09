@@ -1,16 +1,26 @@
-include $(DINGOS_PATH)/Makefile.inc
+include $(DINGOS_MAKEFILE_INCLUDE)
 
 SUBDIRS = init libc memory drivers build
 
-all: $(SUBDIRS) objcopy
+
+all:
+	@echo "Please specify the architecture: x86 or rpi2"
+
+rpi2: export RULE = rpi2
+rpi2: export DINGOS_MAKEFILE_INCLUDE = $(DINGOS_PATH)/Makefile_rpi2.inc
+rpi2: $(SUBDIRS)
+
+x86: export RULE = x86
+x86: export DINGOS_MAKEFILE_INCLUDE = $(DINGOS_PATH)/Makefile_x86.inc
+x86: $(SUBDIRS)
 
 $(SUBDIRS):
-	$(MAKE) -C $@
+	$(MAKE) $(RULE) -C $@
 
-objcopy:
-	$(OBJCOPY) $(DINGOS_PATH)/build/kernel.elf -O binary kernel7.img
 
-.PHONY: all $(SUBDIRS)
+
+.PHONY: x86 $(SUBDIRS)
+
 
 clean:
 	rm build/*.o

@@ -2,10 +2,9 @@ include $(DINGOS_MAKEFILE_INCLUDE)
 
 SUBDIRS = 
 
-rpi2: $(SUBDIRS)
-x86: $(SUBDIRS)
+all: $(SUBDIRS)
 
 $(SUBDIRS):
 	$(MAKE) -C $@
 
-.PHONY: rpi2 x86 $(SUBDIRS)
+.PHONY: all $(SUBDIRS)

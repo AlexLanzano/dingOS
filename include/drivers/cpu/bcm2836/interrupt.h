@@ -12,6 +12,16 @@
 #define INTERRUPT_DISABLE_IRQ1 INTERRUPT_BASE + 0x21C
 #define INTERRUPT_DISABLE_IRQ2 INTERRUPT_BASE + 0x220
 #define INTERRUPT_DISABLE_IRQ_BASIC INTERRUPT_BASE + 0x224
-void init_interrupts();
 
+#define BASIC_ARM_TIMER_IRQ         (1 << 0)
+#define BASIC_ARM_MAILBOX_IRQ       (1 << 1)
+#define BASIC_ARM_DOORBELL_0_IRQ    (1 << 2)
+#define BASIC_ARM_DOORBELL_1_IRQ    (1 << 3)
+#define BASIC_GPU_0_HALTED_IRQ      (1 << 4)
+#define BASIC_GPU_1_HALTED_IRQ      (1 << 5)
+#define BASIC_ACCESS_ERROR_1_IRQ    (1 << 6)
+#define BASIC_ACCESS_ERROR_0_IRQ    (1 << 7)
+
+void enable_interrupts();
+void init_interrupts();
 #endif

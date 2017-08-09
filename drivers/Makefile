@@ -1,10 +1,12 @@
-include $(DINGOS_PATH)/Makefile.inc
+include $(DINGOS_MAKEFILE_INCLUDE)
 
 SUBDIRS = cpu device gpu
 
-all: $(SUBDIRS)
+rpi2: $(SUBDIRS)
+
+x86: $(SUBDIRS)
 
 $(SUBDIRS):
-	$(MAKE) -C $@
+	$(MAKE) $(RULE) -C $@
 
-.PHONY: all $(SUBDIRS)
+.PHONY: x86 rpi2 $(SUBDIRS)
