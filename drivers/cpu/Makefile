@@ -1,8 +1,4 @@
-ifdef DINGOS_RPI2
-include $(DINGOS_PATH)/Makefile_rpi2.inc
-else ifdef DINGOS_X86
-include $(DINGOS_PATH)/Makefile_x86.inc
-endif
+include $(DINGOS_MAKEFILE_INCLUDE)
 
 SUBDIRS_RPI2 = bcm2836
 SUBDIRS_X86 = x86

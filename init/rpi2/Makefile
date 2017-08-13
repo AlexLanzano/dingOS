@@ -1,4 +1,4 @@
-include $(DINGOS_PATH)/Makefile.inc
+include $(DINGOS_PATH)/Makefile_rpi2.inc
 
 C = $(wildcard *.c)
 COBJ = $(SRC:.c=.o)
@@ -8,7 +8,7 @@ AOBJ = $(ASM:.S=.o)
 SRC = $(C) $(ASM)
 OBJ = $(COBJ) $(AOBJ)
 
-all: $(OBJ)
+rpi2: $(OBJ)
 
 %.o: %.c
 	$(CC) -c  $(CFLAGS) $(INCLUDE_PATH) -o $(TARGET_DIR)$@ $^

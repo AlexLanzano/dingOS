@@ -1,4 +1,4 @@
-include $(DINGOS_PATH)/Makefile.inc
+include $(DINGOS_PATH)/Makefile_rpi2.inc
 
 C = $(wildcard *.c)
 COBJ = $(SRC:.c=.o)

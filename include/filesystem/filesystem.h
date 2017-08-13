@@ -28,7 +28,7 @@ typedef struct{
 } file;
 
 
-void init_fs(uint32_t kernel_end);
+void init_fs();
 file* file_init(const char *name, uint8_t type, uint8_t permissions, file *parent);
 void file_free(file *file);
 int file_append_child(file *dst_file, file *src_file);

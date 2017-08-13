@@ -4,8 +4,6 @@
 font:
 	.incbin 	"font0.bin"
 
-
-
 	.section	.text
 	.global		check_mem_loc
 check_mem_loc:

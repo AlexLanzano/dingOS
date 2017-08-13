@@ -9,7 +9,8 @@ x86: $(SUBDIRS_X86)
 
 $(SUBDIRS_RPI2):
 	$(MAKE) -C $@
+
 $(SUBDIRS_X86):
 	$(MAKE) -C $@
 
-.PHONY: all $(SUBDIRS)
+.PHONY: rpi2 x86 $(SUBDIRS_RPI2) $(SUBDIRS_X86)

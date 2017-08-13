@@ -29,13 +29,13 @@ void show_blocks()
 */
 block_t *_next_block(block_t *block)
 {
-	uint8_t *ret = (int8_t*)block;
+	uint8_t *ret = (uint8_t*)block;
 	ret += sizeof(block_t);
 	ret += block->size;
 	return (block_t*)ret;
 }
 
-uint8_t *_create_block(uint8_t *address, uint32_t size)
+uint8_t *_create_block(uint32_t size)
 {
 	block_t *b_ptr = (block_t*)mm_handler.last_alloc;
 	b_ptr->free = 0;
@@ -86,7 +86,7 @@ void* malloc(size_t size)
 	}
 	// If no blocks were found, then it creates a new one at the end of the heap
 	if (mm_handler.last_alloc + size + sizeof(block_t) < mm_handler.heap_end){ 
-		return _create_block((uint8_t*)b_ptr, size);
+		return _create_block(size);
 	}
 	
 	return NULL;

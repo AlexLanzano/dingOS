@@ -8,7 +8,7 @@
 file **files;
 int files_size = 0;
 
-void init_fs(uint32_t kernel_end)
+void init_fs()
 {
 	files = malloc(sizeof(file*) * 20);
 	files[0] = malloc(sizeof(file));
@@ -40,7 +40,7 @@ file* file_init(const char *name, uint8_t type, uint8_t permissions, file *paren
 	}
 
 	for(int i = 0; i < files_size; ++i){
-		if(files[i]->free = 1){
+		if(files[i]->free == 1){
 			files[i] = new_file;
 			++files_size;
 		}
@@ -78,7 +78,7 @@ int file_write(file *file, void *data, size_t data_size, uint8_t option)
 {
 	// ADD BOUNDS CHECK
 	
-	for(int i = 0; i < data_size; ++i){
+	for(uint32_t i = 0; i < data_size; ++i){
 		uint8_t d = *(uint8_t*)data++;
 		if(option == FILE_OVERWRITE)
 			file->data[i] = d;

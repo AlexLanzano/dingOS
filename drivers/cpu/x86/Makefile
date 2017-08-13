@@ -1,6 +1,6 @@
 include $(DINGOS_MAKEFILE_INCLUDE)
 
-SUBDIRS = 
+SUBDIRS = vga
 
 all: $(SUBDIRS)
 
