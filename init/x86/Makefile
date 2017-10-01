@@ -13,7 +13,4 @@ all: $(OBJ)
 	$(CC) -c  $(CFLAGS) $(INCLUDE_PATH) -o $(TARGET_DIR)$@ $^
 
 %.o: %.S
-	$(CC) -c  $(CFLAGS) $(INCLUDE_PATH) -o $(TARGET_DIR)$@ $^
-
-
-
+	$(CC) -c $(LINK) $(CFLAGS) $(INCLUDE_PATH) -o $(TARGET_DIR)$@ $^

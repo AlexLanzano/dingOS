@@ -1,6 +1,6 @@
-CC = /opt/cross/bin/i686-elf-gcc
-OBJCOPY = /opt/cross/bin/i686-elf-objcopy
-CFLAGS = -std=gnu99 -ffreestanding -Wall -Wextra -Werror -nostdlib -nostartfiles
+CC = /opt/cross/bin/x86_64-elf-gcc
+OBJCOPY = /opt/cross/bin/x86_64-elf-objcopy
+CFLAGS = -std=gnu99 -ffreestanding -Wall -Wextra -Werror -nostdlib
 TARGET_DIR = $(DINGOS_PATH)/build/
 INCLUDE_PATH = -I$(DINGOS_PATH)/include \
 -I$(DINGOS_PATH)/include/drivers/cpu/ \

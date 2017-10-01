@@ -10,5 +10,3 @@ rpi2:
 x86:
 	$(CC) $(LINK) $(CFLAGS) $(OBJ) -o kernel.elf
 	$(OBJCOPY) $(DINGOS_PATH)/build/kernel.elf -O binary $(DINGOS_PATH)/dingos.img
-
-
