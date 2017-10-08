@@ -1,0 +1,6 @@
+*.conf
+*.o
+*.img
+*.elf
+build
+compiler
