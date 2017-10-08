@@ -1,5 +1,3 @@
-include $(DINGOS_CONF)
-
 SUBDIRS := $(wildcard */.)
 
 all: $(SUBDIRS)

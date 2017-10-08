@@ -1,11 +1,15 @@
 include $(DINGOS_CONF)
 
-SRC := $(wildcard *.c)
-SRC += $(wildcard *.S)
-OBJ := $(SRC:.c=.o)
-OBJ += $(SRC:.S=.o)
+C = $(wildcard *.c)
+COBJ = $(SRC:.c=.o)
+ASM = $(wildcard *.S)
+AOBJ = $(ASM:.S=.o)
 
-all: $(OBJ)
+SRC = $(C) $(ASM)
+OBJ = $(COBJ) $(AOBJ)
+
+rpi2: $(OBJ)
+x86: $(OBJ)
 
 %.o: %.c
 	$(CC) -c  $(CFLAGS) $(INCLUDE_PATH) -o $(TARGET_DIR)$@ $^

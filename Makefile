@@ -1,30 +1,30 @@
-include $(DINGOS_MAKEFILE_INCLUDE)
+MAKEFLAGS += --no-print-directory
+SUBDIRS := $(wildcard */.)
+EXCLUDE := compiler/. img/. build/. resources/. include/. user_space/. scripts/.
+SUBDIRS := $(filter-out $(EXCLUDE), $(SUBDIRS))
 
+all: export DINGOS_PATH = $(shell pwd)
+all: export DINGOS_CONF = $(DINGOS_PATH)/Makefile.conf
+all: $(SUBDIRS)
+all: build
 
-SUBDIRS = init libc memory drivers build
-
-
-all:
-	@echo "Please specify the architecture: x86 or rpi2"
-
-rpi2: export DINGOS_PATH = $(shell pwd)
-rpi2: export RULE = rpi2
-rpi2: export DINGOS_MAKEFILE_INCLUDE = $(DINGOS_PATH)/Makefile_rpi2.inc
-rpi2: $(SUBDIRS)
-
-x86: export DINGOS_PATH = $(shell pwd)
-x86: export RULE = x86
-x86: export DINGOS_MAKEFILE_INCLUDE = $(DINGOS_PATH)/Makefile_x86.inc
-x86: $(SUBDIRS)
+install:
+	@scripts/install_binutils.sh
+	@scripts/install_gcc.sh
 
 $(SUBDIRS):
-	$(MAKE) $(RULE) -C $@
+	@$(MAKE) -C $@
+
+build:
+	@$(MAKE) -C build/.
 
 
-
-.PHONY: x86 $(SUBDIRS)
-
+.PHONY: $(SUBDIRS) build
 
 clean:
-	rm build/*.o
-	rm build/*.elf
+	@rm -f build/*.o
+	@rm -f build/*.elf
+	@rm -f dingos.img
+
+clean_compiler:
+	@rm -rf compiler/*

@@ -25,7 +25,7 @@ void show_blocks()
 		block += block->size;
 		block += sizeof(block_t);
 	}
-	
+
 }
 */
 
@@ -52,7 +52,7 @@ uint8_t *_split_block(uint8_t *block_addr, uint32_t size)
 	block_t *b_ptr;
 	uint32_t split_mem_size;
 	uint8_t *return_addr;
-	
+
 	b_ptr = (block_t*)block_addr;
 	split_mem_size = b_ptr->size - size;
 	b_ptr->size = size;
@@ -75,19 +75,18 @@ void* malloc(size_t size)
 		if (b_ptr->free && size <= b_ptr->size) {
 			if (b_ptr->size - size > sizeof(block_t)) {
 				// if the block is large enough to be split
-				return _split_block((uint8_t*)b_ptr, size);   
+				return _split_block((uint8_t*)b_ptr, size);
 			}
 		}
 		b_ptr = _next_block(b_ptr);
 		++block_count;
 	}
 	// If no blocks were found, then it creates a new one at the end of the heap
-	if (mm_handler.last_alloc + size + sizeof(block_t) < mm_handler.heap_end){ 
+	if (mm_handler.last_alloc + size + sizeof(block_t) < mm_handler.heap_end){
 		return _create_block(size);
 	}
-	
+
 	return NULL;
-	
 }
 
 char* realloc(void *mem, size_t size)
@@ -97,12 +96,12 @@ char* realloc(void *mem, size_t size)
 	// if block is at the end of heap, extend the block
 	if((uint32_t *)mem == mm_handler.last_alloc || block->size <= size){
 		block->size = size;
-		return mem;	    
+		return mem;
 	}
-	
+
 	block_t *next_block = (block_t *)(mem + block->size);
 	size_t next_block_space = sizeof(block_t) + next_block->size;
-	
+
 	// if the next block is free and is large enough, then combine the blocks
 	if(next_block->free && block->size + next_block_space <= size){
 		block->size += next_block_space;
@@ -120,7 +119,7 @@ char* realloc(void *mem, size_t size)
 	//possibly need to memset new_block + sizeof(block_t) to 0
 	memcpy(new_block + sizeof(block_t), mem, size);
 	return (char *)((uint32_t*) new_block + sizeof(block_t));
-	
+
 }
 
 void free(void *block)
