@@ -18,8 +18,8 @@ $(SUBDIRS):
 build:
 	@$(MAKE) -C build/.
 
-
-.PHONY: $(SUBDIRS) build
+run:
+	@qemu-system-x86_64 -fda dingos.img
 
 clean:
 	@rm -f build/*.o
@@ -28,3 +28,5 @@ clean:
 
 clean_compiler:
 	@rm -rf compiler/*
+
+.PHONY: $(SUBDIRS) build
