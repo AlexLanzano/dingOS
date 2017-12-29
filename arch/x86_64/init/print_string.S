@@ -1,5 +1,4 @@
-_print_string:
-	print_string:
+print_string:
 	lodsb
 	or %al, %al
 	jz print_string_end
@@ -12,6 +11,6 @@ print_string_end:
 	ret
 
 	.macro print_string string
-	lea		\string, %si
-	call	_print_string
+	lea		string, %si
+	call	print_string
 	.endm

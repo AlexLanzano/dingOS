@@ -55,8 +55,9 @@ read_file:
     ## read each sector
     ## scan the sector to see if it contains the file
 
-
+/*
     mov     $32, %ax
-    xor     dx, dx
+    xor     %dx, %dx
     mul     root_size
     div     sector_size
+*/
