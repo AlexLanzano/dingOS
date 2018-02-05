@@ -3,7 +3,7 @@ include $(DINGOS_CONF)
 OBJ = $(wildcard *.o)
 
 all:
-	$(CC) $(LINK) $(CFLAGS) -Ttext 0x7c00 boot.o -o kernel.elf
+	$(CC) $(CFLAGS) boot.o -Ttext 0x7c00 -o kernel.elf
 	$(OBJCOPY) $(DINGOS_PATH)/build/kernel.elf -O binary $(DINGOS_PATH)/dingos.img
 
 clean:

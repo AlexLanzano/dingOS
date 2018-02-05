@@ -19,7 +19,7 @@ build:
 	@$(MAKE) -C build/.
 
 run:
-	@qemu-system-x86_64 -drive file=dingos.img,if=floppy,format=raw,cyls=1,heads=1,secs=5
+	@qemu-system-x86_64 -drive file=dingos.img,if=floppy,format=raw -d in_asm,guest_errors
 
 clean:
 	@rm -f build/*.o
