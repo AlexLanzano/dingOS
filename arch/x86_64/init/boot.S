@@ -3,7 +3,7 @@
 
 _start:
     jmp     real_mode
-    .include "print.s"
+    .include "print_rm.s"
     .include "disk.s"
     .include "pm_switch.s"
 
@@ -55,6 +55,9 @@ abort:
     jmp     abort
 
     .code32
+
+	.include "print_pm.s"
+	.include "lm_switch.s"
 protected_mode:
     mov     $data_segment, %ax
     mov     %ax, %ds
@@ -68,26 +71,12 @@ protected_mode:
 
     mov     $0x1000, %esi
     call    print_pm
+
+	// Enter Long Mode
+	jmp		enter_lm
+
     hlt
 
-print_pm:
-    mov     $0xb8000, %edx
-
-print_pm_loop:
-    lodsb
-    or      %al, %al
-    mov     $0x0f, %ah
-    jz      print_pm_end
-
-    mov     %ax, (%edx)
-
-    add     $1, %ebx
-    add     $2, %edx
-    jmp     print_pm_loop
-
-print_pm_end:
-    //popa
-    ret
 
 
 //error_msg0:  .asciz "ERROR: failed to read drive parameters. Aborting..."
