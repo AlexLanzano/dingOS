@@ -83,15 +83,11 @@ protected_mode:
     mov     $0x90000, %ebp
     mov     %ebp, %esp
 
-    mov     $0x10, %esi
+    mov     $0x100000, %esi
     call    print_pm
 
 	// Enter Long Mode
 	jmp		enter_lm
-    jmp     0x100000
-    hlt
-
-
 
 //error_msg0:  .asciz "ERROR: failed to read drive parameters. Aborting..."
 //error_msg1:  .asciz "ERROR: failed to load kernel. Aborting..."
@@ -100,4 +96,3 @@ protected_mode:
     .byte 0x55
     .byte 0xaa
 //msg:         .asciz "SUCCESS!"
-    .skip 512, 0x0

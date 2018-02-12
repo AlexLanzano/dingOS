@@ -28,7 +28,7 @@ load_kernel:
     mov     $0, %ch         // load the cylinder
     mov     $2, %cl         // load the sector
     mov     $0, %dh         // load the head
-    mov     $0x1000, %bx    // load the kernel at p_addr 0x1000
+    mov     $0x10, %bx    // load the kernel at p_addr 0x100000 ES:BS
     int     $0x13
 	popa
     ret
