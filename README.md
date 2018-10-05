@@ -1,11 +1,10 @@
 # dingOS
-### Usage:
+### Pre-build Setup and Compiling:
 ```
-git clone https://github.com/AlexLanzano/dingOS.git
-cd dingos
-mkdir build
-./scripts/configure.py --arch=x86_64
-make install
+./configure --arch=x86_64
 make
-make run
+```
+### Running the image with QEMU
+```
+./qemu_run
 ```
