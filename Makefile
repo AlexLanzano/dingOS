@@ -1,32 +1,41 @@
-MAKEFLAGS += --no-print-directory
-SUBDIRS := $(wildcard */.)
-EXCLUDE := compiler/. img/. build/. resources/. include/. user_space/. scripts/.
-SUBDIRS := $(filter-out $(EXCLUDE), $(SUBDIRS))
+DINGOS_PATH = $(shell pwd)
+DINGOS_ARCH = x86_64
 
-all: export DINGOS_PATH = $(shell pwd)
-all: export DINGOS_CONF = $(DINGOS_PATH)/Makefile.conf
-all: $(SUBDIRS)
+CC = $(DINGOS_PATH)/compiler/cross/bin/gcc
+OBJCOPY = $(DINGOS_PATH)/compiler/cross/bin/objcopy
+LD = $(DINGOS_PATH)/compiler/cross/bin/ld
+
+CFLAGS := -Werror
+CFLAGS += -Wall
+CFLAGS += -Wextra
+CFLAGS += -ffreestanding
+CFLAGS += -nostdlib
+
+INCLUDE_PATH := -I $(DINGOS_PATH)/include
+
+SUBDIRS := boot
+#SUBDIRS += memory
+
+export DINGOS_PATH
+export DINGOS_ARCH
+export CC
+export OBJCOPY
+export LD
+export INCLUDE_PATH
+export SUBDIRS
+
+.PHONY: all
 all: build
 
-install:
-	@scripts/install_binutils.sh
-	@scripts/install_gcc.sh
+.PHONY: clean
+clean: $(SUBDIRS)
+       $(MAKE) clean -C $^
 
-$(SUBDIRS):
-	@$(MAKE) -C $@
+.PHONY: compiler
+compiler:
+       mkdir -p compiler
+       scripts/build-compiler.sh
 
-build:
-	@$(MAKE) -C build/.
-
-run:
-	@qemu-system-x86_64 -drive file=dingos.img,if=floppy,format=raw -d in_asm,guest_errors
-
-clean:
-	@rm -f build/*.o
-	@rm -f build/*.elf
-	@rm -f dingos.img
-
-clean_compiler:
-	@rm -rf compiler/*
-
-.PHONY: $(SUBDIRS) build
+.PHONY: build
+build: $(SUBDIRS)
+       $(MAKE) -C $^
