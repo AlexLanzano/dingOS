@@ -1,9 +1,9 @@
 DINGOS_PATH = $(shell pwd)
-DINGOS_ARCH = x86_64
+DINGOS_ARCH = x86_64-elf64
 
-CC = $(DINGOS_PATH)/compiler/cross/bin/gcc
-OBJCOPY = $(DINGOS_PATH)/compiler/cross/bin/objcopy
-LD = $(DINGOS_PATH)/compiler/cross/bin/ld
+CC = $(DINGOS_PATH)/compiler/cross/bin/$(DINGOS_ARCH)-gcc
+OBJCOPY = $(DINGOS_PATH)/compiler/cross/bin/$(DINGOS_ARCH)-objcopy
+LD = $(DINGOS_PATH)/compiler/cross/bin/$(DINGOS_ARCH)-ld
 
 CFLAGS := -Werror
 CFLAGS += -Wall
@@ -27,15 +27,19 @@ export SUBDIRS
 .PHONY: all
 all: build
 
+.PHONY: build
+build: $(SUBDIRS)
+	$(MAKE) -C $^
+
 .PHONY: clean
 clean: $(SUBDIRS)
-       $(MAKE) clean -C $^
+	$(MAKE) clean -C $^
 
 .PHONY: compiler
 compiler:
-       mkdir -p compiler
-       scripts/build-compiler.sh
+	mkdir -p compiler
+	scripts/build-compiler.sh
 
-.PHONY: build
-build: $(SUBDIRS)
-       $(MAKE) -C $^
+.PHONY: clean-compiler
+clean-compiler:
+	rm -rf compiler/*
