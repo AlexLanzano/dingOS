@@ -8,45 +8,44 @@ _start:
     mov     %ax, %gs
     mov     %ax, %es
 
-    ## Save disk id
+    // Save disk id
     mov     %dl, diskid
 
-    ## Setup stack
+    // Setup stack
     mov     $_start, %sp
 
-    ## Establish memory map
-    xor     %ebx, %ebx          # Clear ebx
-    mov     $0xE820, %di        # Store the map at address 0xE820
-    mov     $0, %eax            # Set entires to 0
+    // Establish memory map
+    xor     %ebx, %ebx          // Clear ebx
+    mov     $0xE820, %di        // Store the map at address 0xE820
+    mov     $0, %eax            // Set entires to 0
     push    %eax
 e820:
-    mov     $0x534D4150, %edx   # Set magic number
-    mov     $24, %ecx           # Return 24 byte entries
-    mov     $0xe820, %eax       # Set interupt function number
+    mov     $0x534D4150, %edx   // Set magic number
+    mov     $24, %ecx           // Return 24 byte entries
+    mov     $0xe820, %eax       // Set interupt function number
     int     $0x15
-    cmp     $0x534D4150, %eax   # Check if call failed
+    cmp     $0x534D4150, %eax   // Check if call failed
     je      e820_1
 e820_fail:
     hlt
 e820_1:
-    pop     %eax                # Increase entry counter
-    inc     %eax                #
-    push    %eax                #
-    test    %ebx, %ebx          # Check if done
+    pop     %eax                // Increase entry counter
+    inc     %eax                
+    push    %eax                
+    test    %ebx, %ebx          // Check if done
     jz      e820_finish
-    add     $24, %di            # Increment address for next entry
+    add     $24, %di            // Increment address for next entry
     jmp     e820
 e820_finish:
-    mov     %eax, 0xE81C        # Store the amount of entries
+    mov     %eax, 0xE81C        // Store the amount of entries
 
-
-    ## Read kernel from disk into memory
-    mov     $0x42, %ah          # Use extended read function
-    mov     diskid, %dl         # Set disk id
-    mov     $dap, %si           # Set pointer to dap
+    // Read kernel from disk into memory
+    mov     $0x42, %ah          // Use extended read function
+    mov     diskid, %dl         // Set disk id
+    mov     $dap, %si           // Set pointer to dap
     int     $0x13
 
-    ## Enter Protected mode
+    // Enter Protected mode
     cli
 
     lgdt    (gdt_pointer)
@@ -73,19 +72,19 @@ protected_mode:
     call    startc
     hlt
 
-### Disk Address Packet
+// Disk Address Packet
 dap:
-    .byte   0x10                # Size of dap
-    .byte   0x0                 # Unused
-    .2byte  0x9                # Number of Sectors to be read
-    .2byte  0x7e00                 # Offset
-    .2byte  0x0                 # Segment
-    .8byte  0x1                 # Start sector
+    .byte   0x10                // Size of dap
+    .byte   0x0                 // Unused
+    .2byte  0x9                 // Number of Sectors to be read
+    .2byte  0x7e00              // Offset
+    .2byte  0x0                 // Segment
+    .8byte  0x1                 // Start sector
 
 diskid:
     .byte
 
-### TODO: use macros to make this look nicer
+// TODO: use macros to make this look nicer
 gdt_start:
 gdt_null_descriptor:
     .8byte  0x0
