@@ -5,11 +5,7 @@ CC = $(DINGOS_PATH)/compiler/cross/bin/$(DINGOS_ARCH)-gcc
 OBJCOPY = $(DINGOS_PATH)/compiler/cross/bin/$(DINGOS_ARCH)-objcopy
 LD = $(DINGOS_PATH)/compiler/cross/bin/$(DINGOS_ARCH)-ld
 
-CFLAGS := -Werror
-CFLAGS += -Wall
-CFLAGS += -Wextra
-CFLAGS += -ffreestanding
-CFLAGS += -nostdlib
+CFLAGS := -Werror -Wall -Wextra -ffreestanding -nostdlib
 
 INCLUDE_PATH := -I $(DINGOS_PATH)/include
 
@@ -23,6 +19,7 @@ export OBJCOPY
 export LD
 export INCLUDE_PATH
 export SUBDIRS
+export CFLAGS
 
 .PHONY: all
 all: build
