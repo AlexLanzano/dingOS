@@ -105,8 +105,17 @@ gdt_data_descriptor:
     .byte   0b11001111
     .byte   0x00
 
+gdt64_code_descriptor:
+    .2byte  0xffff
+    .2byte  0x0000
+    .byte   0x00
+    .byte   0b10011010
+    .byte   0b11101111
+    .byte   0x00
+
 gdt_end:
 
+    .global gdt_pointer
 gdt_pointer:
     .2byte  gdt_end - gdt_start - 1
     .4byte  gdt_start
@@ -114,13 +123,13 @@ gdt_pointer:
     .set    code_segment, gdt_code_descriptor - gdt_null_descriptor
     .set    data_segment, gdt_data_descriptor - gdt_null_descriptor
 
+    .global e820_map
+e820_map:
+    .long 0x6000
+
     .global e820_entry_count
 e820_entry_count:
     .long
-
-    .global e820_map
-e820_map:
-   .long 0xe820
 
     .org 0x1fe
     .byte   0x55, 0xaa
