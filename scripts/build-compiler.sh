@@ -1,3 +1,4 @@
+ARCH=$1
 INSTALL_PATH=`pwd`"/compiler/"
 
 CORE_COUNT=`nproc`
@@ -9,6 +10,8 @@ OLD_BINUTILS=`ls $INSTALL_PATH | grep -o "binutils[^\"]*" | head -1`
 GCC="gcc-8.3.0"
 GCC_URL="https://ftp.gnu.org/gnu/gcc/"
 OLD_GCC=`ls $INSTALL_PATH | grep -o "gcc[^\"]*" | head -1`
+
+mkdir -p $INSTALL_PATH
 
 if [ -z "$OLD_BINUTILS" ]; then
  echo "New version of binutils found."
@@ -22,13 +25,13 @@ if [ -z "$OLD_BINUTILS" ]; then
      exit 1
  fi
  echo "Unpackaging binutils..."
- tar -xf $INSTALL_PATH$BINUTILS.tar.gz -C $INSTALL_PATH > /dev/null
+ tar -xf $INSTALL_PATH/$BINUTILS.tar.gz -C $INSTALL_PATH > /dev/null
 
- BINUTILS_PATH=$INSTALL_PATH$BINUTILS
+ BINUTILS_PATH=$INSTALL_PATH/$BINUTILS
 
  echo "Configuring binutils..."
  cd $BINUTILS_PATH
- CC=/usr/bin/gcc CXX=/usr/bin/g++ ./configure --target=$DINGOS_ARCH --prefix=$INSTALL_PATH/cross/ --with-sysroot --disable-nls --disable-werror
+ ./configure --target=$ARCH-elf --prefix=$INSTALL_PATH --with-sysroot --disable-nls --disable-werror
 
  echo "Building binutils..."
  make -j$CORE_COUNT
@@ -52,23 +55,21 @@ if [ -z "$OLD_GCC" ]; then
  fi
 
  echo "Unpackaging gcc..."
- tar -xzf $INSTALL_PATH$GCC.tar.gz -C $INSTALL_PATH > /dev/null
+ tar -xzf $INSTALL_PATH/$GCC.tar.gz -C $INSTALL_PATH > /dev/null
 
- GCC_PATH=$INSTALL_PATH$GCC
-
- mkdir $INSTALL_PATH/cross/
+ GCC_PATH=$INSTALL_PATH/$GCC
 
  cd $GCC_PATH
  echo "Downloading prerequisites..."
  ./contrib/download_prerequisites
 
  echo "Configuring GCC..."
- CC=/usr/bin/gcc CXX=/usr/bin/g++ ./configure --target=$DINGOS_ARCH --prefix=$INSTALL_PATH/cross/ --disable-nls --enable-languages=c --without-headers
+ ./configure --target=$ARCH-elf --prefix=$INSTALL_PATH --disable-nls --enable-languages=c --without-headers
 
  echo "Building gcc..."
  make -j$CORE_COUNT all-gcc
 
- echo "Installing binutils..."
+ echo "Installing gcc..."
  make -j$CORE_COUNT install-gcc
  cd $DINGOS_PATH
 

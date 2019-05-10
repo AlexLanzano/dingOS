@@ -1,6 +1,6 @@
 #include <types.h>
-#include <x86/memory.h>
-#include <x86/asm.h>
+#include "memory.h"
+#include "asm.h"
 
 #define KERNEL_MAIN 0x8764
 

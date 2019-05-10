@@ -1,5 +1,5 @@
 #include <types.h>
-#include <x86/memory.h>
+#include "memory.h"
 
 int32_t available_memory_count;
 struct memory_entry *available_memory = (struct memory_entry *)0x20000;
