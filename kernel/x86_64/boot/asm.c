@@ -1,5 +1,5 @@
 #include <types.h>
-#include <x86/asm.h>
+#include "asm.h"
 
 inline void set_cr3(void *value)
 {
