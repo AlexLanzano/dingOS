@@ -45,10 +45,10 @@ boot.elf: $(BOOT_OBJ)
 	$(LD) $(LDFLAGS) -m elf_i386 -Ttext 0x7c00 -o $@ $^
 
 kernel.elf: $(OBJ)
-	$(LD) $(LDFLAGS) -m elf_x86_64 -Ttext $(BOOT_END) -o $@ $^
+	$(LD) $(LDFLAGS) -m elf_x86_64 -e main -Ttext $(BOOT_END) -o $@ $^
 
 dingOS-x86_64.img: boot.elf kernel.elf
-	$(OBJCOPY) boot.elf -O binary boot.img
+	$(OBJCOPY) boot.elf --set-section-flag .bss=alloc,load,contents -O binary boot.img
 	$(OBJCOPY) kernel.elf -O binary kernel.img
 	cat boot.img kernel.img > $(DINGOS_PATH)/dingos-x86_64.img
 	chmod 777 $(DINGOS_PATH)/dingos-x86_64.img
