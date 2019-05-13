@@ -1,9 +1,11 @@
 #include <types.h>
+#include "vga.h"
 
 int main()
 {
-    uint64_t a = 45;
-    a += 10;
+    vga_init();
+    vga_clear();
+    vga_print("Hello, World!");
     __asm__("hlt");
-    return a;
+    return 0;
 }
