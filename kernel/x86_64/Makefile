@@ -17,7 +17,8 @@ boot/boot.S \
 boot/startc.c \
 boot/memory.c \
 boot/asm.c \
-main/main.c
+main/main.c \
+main/vga.c \
 
 BOOT_OBJ = \
 boot/boot.o \
@@ -26,7 +27,8 @@ boot/startc.o \
 boot/memory.o \
 
 OBJ = \
-main/main.o
+main/main.o \
+main/vga.o
 
 BOOT_ELF = boot.elf
 KERNEL_ELF = kernel.elf
