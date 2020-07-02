@@ -2,25 +2,74 @@ export DINGOS_ARCH = x86_64
 export DINGOS_PATH := $(shell pwd)
 KERNEL_PATH := $(DINGOS_PATH)/kernel/$(DINGOS_ARCH)
 
-all: build_kernel
+CC := $(DINGOS_PATH)/compiler/bin/$(DINGOS_ARCH)-elf-gcc
+OBJCOPY := $(DINGOS_PATH)/compiler/bin/$(DINGOS_ARCH)-elf-objcopy
+LD := $(DINGOS_PATH)/compiler/bin/$(DINGOS_ARCH)-elf-ld
 
-build_kernel:
-	$(MAKE) -C $(KERNEL_PATH)
+CFLAGS = -Werror -Wall -Wextra -ffreestanding -nostdlib -g
+LDFLAGS = --omagic -static
+INCLUDE_PATH = -I ./common
+
+BOOT_END = 0x$(shell nm $(BOOT_ELF) | grep " _end" | cut -f 1 -d " ")
+
+SUBDIRS = \
+boot \
+kernel \
+
+SRC = \
+boot/boot.S \
+boot/startc.c \
+boot/memory.c \
+boot/asm.c \
+kernel/main.c \
+kernel/vga.c \
+
+BOOT_OBJ = \
+boot/boot.o \
+boot/asm.o \
+boot/startc.o \
+boot/memory.o \
+
+OBJ = \
+kernel/main.o \
+kernel/vga.o
+
+BOOT_ELF = boot.elf
+KERNEL_ELF = kernel.elf
+
+all: dingOS-x86_64.img
 
 .PHONY: compiler
 compiler:
 	mkdir -p compiler
 	scripts/build-compiler.sh $(DINGOS_ARCH)
 
-.PHONY: clean
-clean: clean-kernel
-	rm -f *.img
-
-clean-kernel:
-	$(MAKE) -C $(KERNEL_PATH) clean
-
 clean-compiler:
 	rm -rf compiler/*
+
+$(BOOT_OBJ): CFLAGS += -m32
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $(INCLUDE_PATH) -o $@ $^
+
+%.o: %.S
+	$(CC) -c $(CFLAGS) $(INCLUDE_PATH) -o $@ $^
+
+$(BOOT_ELF): $(BOOT_OBJ)
+	$(LD) $(LDFLAGS) -m elf_i386 -Ttext 0x7c00 -o $@ $^
+
+$(KERNEL_ELF): $(OBJ)
+	$(LD) $(LDFLAGS) -m elf_x86_64 -e main -Ttext $(BOOT_END) -o $@ $^
+
+dingOS-x86_64.img: $(BOOT_ELF) $(KERNEL_ELF)
+	$(OBJCOPY) $(BOOT_ELF) --set-section-flag .bss=alloc,load,contents -O binary boot.img
+	$(OBJCOPY) $(KERNEL_ELF) -O binary kernel.img
+	cat boot.img kernel.img > $(DINGOS_PATH)/dingos-x86_64.img
+	chmod 777 $(DINGOS_PATH)/dingos-x86_64.img
+
+.PHONY: clean
+clean:
+	rm -f $(BOOT_OBJ) $(OBJ) boot.elf kernel.elf *.img
 
 
 # Debug Targets
