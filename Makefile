@@ -11,6 +11,7 @@ LDFLAGS = --omagic -static
 INCLUDE_PATH = -I ./common
 
 BOOT_END = 0x$(shell nm $(BOOT_ELF) | grep " _end" | cut -f 1 -d " ")
+KERNEL_START_VIRT = $(shell printf "0x%X\n" $$(($(BOOT_END) + 0xc0100000)))
 
 SUBDIRS = \
 boot \
@@ -32,7 +33,7 @@ boot/memory.o \
 
 OBJ = \
 kernel/main.o \
-kernel/vga.o
+kernel/vga.o \
 
 BOOT_ELF = boot.elf
 KERNEL_ELF = kernel.elf
@@ -59,7 +60,7 @@ $(BOOT_ELF): $(BOOT_OBJ)
 	$(LD) $(LDFLAGS) -m elf_i386 -Ttext 0x7c00 -o $@ $^
 
 $(KERNEL_ELF): $(OBJ)
-	$(LD) $(LDFLAGS) -m elf_x86_64 -e main -Ttext $(BOOT_END) -o $@ $^
+	$(LD) $(LDFLAGS) -m elf_x86_64 -e main -Ttext $(KERNEL_START_VIRT) -o $@ $^
 
 dingOS-x86_64.img: $(BOOT_ELF) $(KERNEL_ELF)
 	$(OBJCOPY) $(BOOT_ELF) --set-section-flag .bss=alloc,load,contents -O binary boot.img
@@ -80,10 +81,10 @@ run-debug:
 	qemu-system-x86_64 -s -S -hda dingos-x86_64.img -d in_asm,guest_errors,cpu_reset
 
 run-debug-boot:
-	qemu-system-i386 -s -S -hda dingos-x86_64.img -d in_asm,guest_errors -nographic
+	qemu-system-i386 -s -S -hda dingos-x86_64.img -d in_asm,guest_errors
 
 gdb:
-	gdb -ex "file kernel/x86_64/kernel.elf" -ex "set arch i386:x86-64" -ex "target remote localhost:1234"
+	gdb -ex "file kernel.elf" -ex "set arch i386:x86-64" -ex "target remote localhost:1234"
 
 gdb-boot:
-	gdb -ex "file kernel/x86_64/boot.elf" -ex "set arch i386" -ex "target remote localhost:1234"
+	gdb -ex "file boot.elf" -ex "set arch i386" -ex "target remote localhost:1234"
