@@ -10,18 +10,20 @@ CFLAGS = -Werror -Wall -Wextra -ffreestanding -nostdlib -g
 LDFLAGS = --omagic -static
 INCLUDE_PATH = -I ./common
 
-BOOT_END = 0x$(shell nm $(BOOT_ELF) | grep " _end" | cut -f 1 -d " ")
-KERNEL_START_VIRT = $(shell printf "0x%X\n" $$(($(BOOT_END) + 0xc0100000)))
+KERNEL_START_VIRT = 0xc0100000
 
 SUBDIRS = \
 boot \
 kernel \
 
 SRC = \
+common/string.c \
 boot/boot.S \
 boot/startc.c \
 boot/memory.c \
 boot/asm.c \
+boot/elf64.c \
+boot/string.c \
 kernel/main.c \
 kernel/vga.c \
 
@@ -30,6 +32,8 @@ boot/boot.o \
 boot/asm.o \
 boot/startc.o \
 boot/memory.o \
+boot/elf64.o \
+boot/string.o \
 
 OBJ = \
 kernel/main.o \
@@ -64,8 +68,7 @@ $(KERNEL_ELF): $(OBJ)
 
 dingOS-x86_64.img: $(BOOT_ELF) $(KERNEL_ELF)
 	$(OBJCOPY) $(BOOT_ELF) --set-section-flag .bss=alloc,load,contents -O binary boot.img
-	$(OBJCOPY) $(KERNEL_ELF) -O binary kernel.img
-	cat boot.img kernel.img > $(DINGOS_PATH)/dingos-x86_64.img
+	cat boot.img $(KERNEL_ELF) > $(DINGOS_PATH)/dingos-x86_64.img
 	chmod 777 $(DINGOS_PATH)/dingos-x86_64.img
 
 .PHONY: clean
